@@ -46,7 +46,7 @@ public:
     }
 
     /**
-     * a printable format of ticket object, splitter is " - ".
+     * a printable format of ticket object, splitter is " || ".
      *
      * @return printable string of ticket.
      */
@@ -54,8 +54,8 @@ public:
         ostringstream pricePrecisionStream;
         pricePrecisionStream << fixed << setprecision(2) << price;
 
-        return to_string(id) + " - " + startCity + " - " + reachCity + " - " +
-               takeOffTime + " - " + receiveTime + " - " +
-                pricePrecisionStream.str() + " - " + to_string(ticketNumber) + " - ";
+        return to_string(id) + " || " + startCity + " || " + reachCity + " || " +
+               takeOffTime + " || " + receiveTime + " || " +
+                pricePrecisionStream.str() + " || " + to_string(ticketNumber) + " || ";
     }
 };

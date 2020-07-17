@@ -11,20 +11,20 @@ using namespace std;
 
 Ticket requestTicket() {
     cout << "Please input tickets info to insert, format like " << endl;
-    cout << "\"Start City - Reach City - Take Off - Time Receive - Price - Ticket Number\": " << endl;
+    cout << "\"Start City || Reach City || Take Off || Time Receive || Price || Ticket Number\": " << endl;
 
     start:
     string userInput;
     getline(cin, userInput);
 
     vector<string> splitResult;
-    boost::split(splitResult, userInput, boost::is_any_of("-"));
+    boost::split(splitResult, userInput, boost::is_any_of("||"));
 
     while (splitResult.size() != 6) {
         cout << "Input field length is illegal, please try again: ";
 
         getline(cin, userInput);
-        boost::split(splitResult, userInput, boost::is_any_of("-"));
+        boost::split(splitResult, userInput, boost::is_any_of("||"));
     }
 
     string priceString = splitResult[4];
