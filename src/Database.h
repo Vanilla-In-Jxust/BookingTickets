@@ -13,15 +13,17 @@ using namespace sqlite_orm::internal;
  */
 auto initDatabase() {
     using namespace sqlite_orm;
-    auto storage = make_storage("tickets.sqlite",
-                                make_table("tickets",
-                                           make_column("id", &Ticket::id, autoincrement(), primary_key()),
-                                           make_column("startCity", &Ticket::startCity),
-                                           make_column("reachCity", &Ticket::reachCity),
-                                           make_column("takeOffTime", &Ticket::takeOffTime),
-                                           make_column("receiveTime", &Ticket::receiveTime),
-                                           make_column("price", &Ticket::price),
-                                           make_column("ticketNumber", &Ticket::ticketNumber)));
+    auto storage = make_storage(
+            "tickets.sqlite",
+            make_table(
+                    "tickets",
+                    make_column("id", &Ticket::id, autoincrement(), primary_key()),
+                    make_column("startCity", &Ticket::startCity),
+                    make_column("reachCity", &Ticket::reachCity),
+                    make_column("takeOffTime", &Ticket::takeOffTime),
+                    make_column("receiveTime", &Ticket::receiveTime),
+                    make_column("price", &Ticket::price),
+                    make_column("ticketNumber", &Ticket::ticketNumber)));
 
     storage.sync_schema();
     return storage;

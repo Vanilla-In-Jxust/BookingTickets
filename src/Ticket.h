@@ -28,17 +28,17 @@ public:
 
     /**
      * convert a ticket object to json object.
+     * Also, C++ do not have the real reflection.
      *
      * @return json object
+     * @see https://stackoverflow.com/questions/17549906/c-json-serialization
      */
     json toJson() {
-        json ticketJson = json{{"startCity",    startCity},
-                               {"reachCity",    reachCity},
-                               {"takeOffTime",  takeOffTime},
-                               {"receiveTime",  receiveTime},
-                               {"price",        price},
-                               {"ticketNumber", ticketNumber}};
-
-        return ticketJson;
+        return json{{"startCity",    startCity},
+                    {"reachCity",    reachCity},
+                    {"takeOffTime",  takeOffTime},
+                    {"receiveTime",  receiveTime},
+                    {"price",        price},
+                    {"ticketNumber", ticketNumber}};
     }
 };
