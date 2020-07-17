@@ -56,6 +56,17 @@ public:
 
         return to_string(id) + " || " + startCity + " || " + reachCity + " || " +
                takeOffTime + " || " + receiveTime + " || " +
-                pricePrecisionStream.str() + " || " + to_string(ticketNumber) + " || ";
+               pricePrecisionStream.str() + " || " + to_string(ticketNumber) + " || ";
+    }
+
+    /**
+     * compare two ticket info, return true of they are same.
+     *
+     * @param anotherTicket to compare
+     * @return true if the are same trip.
+     */
+    bool compare(const Ticket &anotherTicket) const {
+        return this->startCity == anotherTicket.startCity && this->reachCity == anotherTicket.reachCity
+               && this->takeOffTime == anotherTicket.takeOffTime && this->receiveTime == anotherTicket.receiveTime;
     }
 };
