@@ -9,6 +9,11 @@
 
 using namespace std;
 
+/**
+ * request user input a ticket's info, and return this ticket.
+ *
+ * @return the built ticket object
+ */
 Ticket requestTicket() {
     cout << "Please input tickets info to insert, format like " << endl;
     cout << "\"Start City || Reach City || Take Off || Time Receive || Price || Ticket Number\": " << endl;
