@@ -34,7 +34,8 @@ public:
      * @see https://stackoverflow.com/questions/17549906/c-json-serialization
      */
     json toJson() {
-        return json{{"startCity",    startCity},
+        return json{{"id",           id},
+                    {"startCity",    startCity},
                     {"reachCity",    reachCity},
                     {"takeOffTime",  takeOffTime},
                     {"receiveTime",  receiveTime},
