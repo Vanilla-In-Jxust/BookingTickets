@@ -4,6 +4,8 @@
 
 #include "string"
 #include "../include/json.hpp"
+#include "boost/lexical_cast.hpp"
+#include "iomanip"
 
 using namespace std;
 
@@ -41,5 +43,19 @@ public:
                     {"receiveTime",  receiveTime},
                     {"price",        price},
                     {"ticketNumber", ticketNumber}};
+    }
+
+    /**
+     * a printable format of ticket object, splitter is " - ".
+     *
+     * @return printable string of ticket.
+     */
+    string toString() const {
+        ostringstream pricePrecisionStream;
+        pricePrecisionStream << fixed << setprecision(2) << price;
+
+        return to_string(id) + " - " + startCity + " - " + reachCity + " - " +
+               takeOffTime + " - " + receiveTime + " - " +
+                pricePrecisionStream.str() + " - " + to_string(ticketNumber) + " - ";
     }
 };
