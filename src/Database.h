@@ -37,7 +37,7 @@ auto initDatabase() {
  * @return id of database
  */
 template<class ...Ts>
-int insertTicket(storage_t<Ts...> storage, Ticket ticket) {
+int insertTicket(storage_t<Ts...> storage, Ticket &ticket) {
     auto insertedId = storage.insert(ticket);
     ticket.id = insertedId;
 

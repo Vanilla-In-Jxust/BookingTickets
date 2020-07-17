@@ -56,7 +56,7 @@ public:
 
         return to_string(id) + " || " + startCity + " || " + reachCity + " || " +
                takeOffTime + " || " + receiveTime + " || " +
-               pricePrecisionStream.str() + " || " + to_string(ticketNumber) + " || ";
+               pricePrecisionStream.str() + " || " + to_string(ticketNumber);
     }
 
     /**
