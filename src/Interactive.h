@@ -12,6 +12,14 @@
 
 using namespace std;
 
+/**
+ * generate a list string of given tickets,
+ * return "There is no ticket as result. " if list is empty.
+ *
+ * @param ticketList to generate string.
+ * @return printable list srting of ticket list.
+ * @see https://github.com/seleznevae/libfort
+ */
 string printableList(const vector<Ticket> &ticketList) {
     if (ticketList.empty()) return "There is no ticket as result. ";
 
@@ -118,6 +126,12 @@ Ticket requestTicket(sqlite_orm::internal::storage_t<Ts...> storage) {
     return ticket;
 }
 
+/**
+ * query tickets by given field and value, and retuen printable string.
+ *
+ * @param storage need to query.
+ * @return printable string by using printableList(const vector<Ticket> &) method.
+ */
 template<class ...Ts>
 string queryTickets(sqlite_orm::internal::storage_t<Ts...> storage) {
     cout << "1 - query by the number of train. " << endl
