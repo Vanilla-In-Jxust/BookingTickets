@@ -17,7 +17,7 @@ auto initDatabase() {
             "tickets.sqlite",
             make_table(
                     "tickets",
-                    make_column("id", &Ticket::id, autoincrement(), primary_key()),
+                    make_column("number", &Ticket::number, primary_key()),
                     make_column("startCity", &Ticket::startCity),
                     make_column("reachCity", &Ticket::reachCity),
                     make_column("takeOffTime", &Ticket::takeOffTime),
@@ -37,9 +37,20 @@ auto initDatabase() {
  * @return id of database
  */
 template<class ...Ts>
-int insertTicket(storage_t<Ts...> storage, Ticket &ticket) {
+int insertTicket(storage_t<Ts...> storage, Ticket ticket) {
     auto insertedId = storage.insert(ticket);
-    ticket.id = insertedId;
-
     return insertedId;
+}
+
+template<class ...Ts>
+vector<Ticket> queryByField(storage_t<Ts...> storage, const string &field, const string &value) {
+    auto allTickets = storage.template get_all<Ticket>();
+    vector<Ticket> result;
+
+    for (Ticket ticket: allTickets) {
+        if (ticket.toJson()[field] == value)
+            result.push_back(ticket);
+    }
+
+    return result;
 }
