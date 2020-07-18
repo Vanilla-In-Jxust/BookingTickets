@@ -26,6 +26,10 @@ string printableList(const vector<Ticket> &ticketList) {
     using namespace fort;
 
     utf8_table ticketTable;
+
+    for (int i = 1; i < 5; ++i)
+        ticketTable.column(i).set_cell_text_align(text_align::center);
+
     ticketTable << header << "Number" << "Start city" << "Reach city" <<
                 "Take off time" << "Receive time" << "Price" << "Ticket number" << endr;
 
