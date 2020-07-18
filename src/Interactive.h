@@ -123,7 +123,7 @@ Ticket requestTicket(sqlite_orm::internal::storage_t<Ts...> storage) {
 
     Ticket ticket = Ticket(number, startCity, reachCity, takeOffTime, receiveTime, price, ticketNumber);
     insertTicket(storage, ticket);
-    cout << "Ticket of number " + to_string(ticket.ticketNumber) +  " saved. ";
+    cout << "Ticket of number " + to_string(ticket.ticketNumber) +  " saved. " << endl;
 
     return ticket;
 }
@@ -135,7 +135,7 @@ Ticket requestTicket(sqlite_orm::internal::storage_t<Ts...> storage) {
  * @return printable string by using printableList(const vector<Ticket> &) method.
  */
 template<class ...Ts>
-string queryTickets(sqlite_orm::internal::storage_t<Ts...> storage) {
+string searchTickets(sqlite_orm::internal::storage_t<Ts...> storage) {
     cout << "1 - query by the number of train. " << endl
          << "2 - query by the city. " << endl
          << "Choose the way to query: ";
@@ -265,18 +265,6 @@ Ticket modifyTicket(sqlite_orm::internal::storage_t<Ts...> storage) {
     Ticket ticket = requestTicket(storage);
     storage.template remove<Ticket>(resultTicket.id);
     return ticket;
-}
-
-/**
- * return a printable list of all tickets.
- *
- * @param storage need to query all tickets
- * @return printable list string
- */
-template<class ...Ts>
-string showAll(sqlite_orm::internal::storage_t<Ts...> storage) {
-    vector<Ticket> tickets = storage.template get_all<Ticket>();
-    return printableList(tickets);
 }
 
 /**
