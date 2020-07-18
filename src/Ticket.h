@@ -3,14 +3,16 @@
 //
 
 #include "string"
-#include "../include/json.hpp"
 #include "boost/lexical_cast.hpp"
 #include "iomanip"
+#include "json/json.h"
 
 using namespace std;
 
 class Ticket {
 public:
+    int id = -1;
+
     int number = -1;
     string startCity = "undefined";
     string reachCity = "undefined";
@@ -29,7 +31,6 @@ public:
             takeOffTime(move(takeOffTime)), receiveTime(move(receiveTime)),
             price(price), ticketNumber(ticketNumber) {}
 
-    using json = nlohmann::json;
 
     /**
      * convert a ticket object to json object.
@@ -38,14 +39,19 @@ public:
      * @return json object
      * @see https://stackoverflow.com/questions/17549906/c-json-serialization
      */
-    json toJson() {
-        return json{{"number",       number},
-                    {"startCity",    startCity},
-                    {"reachCity",    reachCity},
-                    {"takeOffTime",  takeOffTime},
-                    {"receiveTime",  receiveTime},
-                    {"price",        price},
-                    {"ticketNumber", ticketNumber}};
+    Json::Value toJson() const {
+        Json::Value ticketJson;
+
+        ticketJson["id"] = to_string(id);
+        ticketJson["number"] = to_string(number);
+        ticketJson["startCity"] = startCity;
+        ticketJson["reachCity"] = reachCity;
+        ticketJson["takeOffTime"] = takeOffTime;
+        ticketJson["receiveTime"] = receiveTime;
+        ticketJson["price"] = to_string(price);
+        ticketJson["ticketNumber"] = to_string(ticketNumber);
+
+        return ticketJson;
     }
 
     /**
