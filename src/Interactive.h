@@ -157,7 +157,7 @@ string searchTickets(sqlite_orm::internal::storage_t<Ts...> storage) {
             getline(cin, userInput);
         }
     } else if (userInput == "2") {
-        queryField = "ticketNumber";
+        queryField = "reachCity";
         cout << "Input the city: ";
 
         getline(cin, userInput);
