@@ -29,7 +29,11 @@ int main() {
     switch (inputNumber) {
         case 0: {
             system("clear");
-            cout << "Thanks for using, bye! " << endl;
+
+            cout << "+-----------------------------+" << endl;
+            cout << "|   Thanks for using, bye!    |" << endl;
+            cout << "+-----------------------------+" << endl;
+
             exit(0);
         }
         case 1: {
