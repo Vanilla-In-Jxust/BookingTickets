@@ -2,7 +2,7 @@
 // Created by vanilla on 2020/7/17.
 //
 
-#include "../include/sqlite_orm.h"
+#include "sqlite_orm.h"
 
 using namespace sqlite_orm::internal;
 
