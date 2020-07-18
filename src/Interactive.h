@@ -13,6 +13,8 @@
 using namespace std;
 
 string printableList(const vector<Ticket> &ticketList) {
+    if (ticketList.empty()) return "There is no ticket as result. ";
+
     using namespace fort;
 
     char_table ticketTable;
@@ -114,4 +116,37 @@ Ticket requestTicket(sqlite_orm::internal::storage_t<Ts...> storage) {
     Ticket ticket = Ticket(number, startCity, reachCity, takeOffTime, receiveTime, price, ticketNumber);
     insertTicket(storage, ticket);
     return ticket;
+}
+
+template<class ...Ts>
+string queryTickets(sqlite_orm::internal::storage_t<Ts...> storage) {
+    cout << "1 - query by the number of train. " << endl
+         << "2 - query by the city. " << endl
+         << "Choose the way to query: ";
+
+    string userInput, queryField;
+    getline(cin, userInput);
+    while (userInput != "1" && userInput != "2") {
+        cout << R"(Input can only be "1" or "2", please try again: )";
+        getline(cin, userInput);
+    }
+
+    if (userInput == "1") {
+        queryField = "ticketNumber";
+        cout << "Input the number of train: ";
+
+        getline(cin, userInput);
+        while (!isPositiveInteger(userInput)) {
+            cout << "Input is invalid, please try again: ";
+            getline(cin, userInput);
+        }
+    } else if (userInput == "2") {
+        queryField = "ticketNumber";
+        cout << "Input the city: ";
+
+        getline(cin, userInput);
+    }
+
+    vector<Ticket> result = queryTickets(storage, queryField, userInput);
+    return printableList(result);
 }
