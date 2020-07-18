@@ -11,18 +11,21 @@ using namespace std;
 
 class Ticket {
 public:
-    // id is autoincrement primary key, so it is -1.
-    int id = -1;
-    string startCity;
-    string reachCity;
-    string takeOffTime;
-    string receiveTime;
-    double price;
-    int ticketNumber;
+    int number = -1;
+    string startCity = "undefined";
+    string reachCity = "undefined";
+    string takeOffTime = "undefined";
+    string receiveTime = "undefined";
+    double price = 0.0;
+    int ticketNumber = -1;
 
-    // All args constructor.
-    Ticket(string startCity, string reachCity, string takeOffTime, string receiveTime, double price, int ticketNumber) :
-            startCity(move(startCity)), reachCity(move(reachCity)),
+    // @NoArgsConstructor.
+    Ticket() = default;
+
+    // @AllArgsConstructor.
+    Ticket(int number, string startCity, string reachCity, string takeOffTime, string receiveTime,
+           double price, int ticketNumber) :
+            number(number), startCity(move(startCity)), reachCity(move(reachCity)),
             takeOffTime(move(takeOffTime)), receiveTime(move(receiveTime)),
             price(price), ticketNumber(ticketNumber) {}
 
@@ -36,7 +39,7 @@ public:
      * @see https://stackoverflow.com/questions/17549906/c-json-serialization
      */
     json toJson() {
-        return json{{"id",           id},
+        return json{{"number",       number},
                     {"startCity",    startCity},
                     {"reachCity",    reachCity},
                     {"takeOffTime",  takeOffTime},
@@ -46,27 +49,12 @@ public:
     }
 
     /**
-     * a printable format of ticket object, splitter is " || ".
-     *
-     * @return printable string of ticket.
-     */
-    string toString() const {
-        ostringstream pricePrecisionStream;
-        pricePrecisionStream << fixed << setprecision(2) << price;
-
-        return to_string(id) + " || " + startCity + " || " + reachCity + " || " +
-               takeOffTime + " || " + receiveTime + " || " +
-               pricePrecisionStream.str() + " || " + to_string(ticketNumber);
-    }
-
-    /**
      * compare two ticket info, return true of they are same.
      *
      * @param anotherTicket to compare
      * @return true if the are same trip.
      */
     bool compare(const Ticket &anotherTicket) const {
-        return this->startCity == anotherTicket.startCity && this->reachCity == anotherTicket.reachCity
-               && this->takeOffTime == anotherTicket.takeOffTime && this->receiveTime == anotherTicket.receiveTime;
+        return this->number == anotherTicket.number;
     }
 };
