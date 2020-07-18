@@ -267,6 +267,12 @@ Ticket modifyTicket(sqlite_orm::internal::storage_t<Ts...> storage) {
     return ticket;
 }
 
+/**
+ * return a printable list of all tickets.
+ *
+ * @param storage need to query all tickets
+ * @return printable list string
+ */
 template<class ...Ts>
 string showAll(sqlite_orm::internal::storage_t<Ts...> storage) {
     vector<Ticket> tickets = storage.template get_all<Ticket>();
