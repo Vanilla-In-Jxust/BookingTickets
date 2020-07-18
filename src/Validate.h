@@ -14,8 +14,8 @@ using namespace std;
 #pragma ide diagnostic ignored "cert-err58-cpp"
 regex timeRegex = regex("^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$");
 regex integerRegex = regex("[0-9]+");
-regex doubleRegex = regex("[0-9]*\\.[0-9]+|[0-9]+");
-regex chinaLongIdRegex = regex("^\\d{15}|\\d{18}$");
+regex doubleRegex = regex("[0-9]*.[0-9]+|[0-9]+");
+regex chinaLongIdRegex = regex("^[0-9]{15}|[0-9]{18}$");
 
 /**
  *  or "^\d{8,18}|[0-9x]{8,18}|[0-9X]{8,18}?$",
