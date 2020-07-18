@@ -278,3 +278,20 @@ string showAll(sqlite_orm::internal::storage_t<Ts...> storage) {
     vector<Ticket> tickets = storage.template get_all<Ticket>();
     return printableList(tickets);
 }
+
+/**
+ * Just show the usage dialog.
+ */
+void showUsage() {
+    cout << "+-----------------------------------------------+" << endl;
+    cout << "|                Booking Tickets                |" << endl;
+    cout << "+-----------------------------------------------+" << endl;
+    cout << "|       0: quit the system.                     |" << endl;
+    cout << "|       1: Insert a train information.          |" << endl;
+    cout << "|       2: Search a train information.          |" << endl;
+    cout << "|       3: Book a train ticket.                 |" << endl;
+    cout << "|       4. Modify the train information.        |" << endl;
+    cout << "|       5: Show the train information.          |" << endl;
+    cout << "|       6: Save information to file.            |" << endl;
+    cout << "+-----------------------------------------------+" << endl;
+}
