@@ -53,14 +53,4 @@ public:
 
         return ticketJson;
     }
-
-    /**
-     * compare two ticket info, return true of they are same.
-     *
-     * @param anotherTicket to compare
-     * @return true if the are same trip.
-     */
-    bool compare(const Ticket &anotherTicket) const {
-        return this->number == anotherTicket.number;
-    }
 };

@@ -17,7 +17,7 @@ using namespace std;
  * return no ticket info if list is empty.
  *
  * @param ticketList to generate string.
- * @return printable list srting of ticket list.
+ * @return printable list string of ticket list.
  * @see https://github.com/seleznevae/libfort
  */
 string printableList(const vector<Ticket> &ticketList) {
@@ -133,7 +133,7 @@ Ticket requestTicket(sqlite_orm::internal::storage_t<Ts...> storage) {
 }
 
 /**
- * query tickets by given field and value, and retuen printable string.
+ * query tickets by given field and value, and return printable string.
  *
  * @param storage need to query.
  * @return printable string by using printableList(const vector<Ticket> &) method.

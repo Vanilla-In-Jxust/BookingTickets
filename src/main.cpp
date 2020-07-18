@@ -3,7 +3,7 @@
 using namespace std;
 
 /**
- * Just show "press EHTER to back" info.
+ * Just show "press ENTER to back" info.
  */
 void pressToBack() {
     cout << endl << "Press ENTER key to back... ";
@@ -21,7 +21,7 @@ void insertExampleData(sqlite_orm::internal::storage_t<Ts...> storage) {
     storage.insert(Ticket(90, "武昌", "新乡", "01:15", "06:50", 86.0, 20));
     storage.insert(Ticket(2036, "南昌", "汉口", "17:55", "20:34", 360.5, 10));
     storage.insert(Ticket(336, "武昌", "新乡", "23:00", "04:33", 152.0, 5));
-    storage.insert(Ticket(90, "武昌", "新乡", "01:15", "06:50", 86.0, 20));
+    storage.insert(Ticket(1329, "南昌", "长沙", "17:29", "19:14", 264.5, 17));
 }
 
 int main() {
@@ -31,7 +31,7 @@ int main() {
     start:
     system("clear");
     showUsage();
-    cout << "Please choose: (0 ~ 6) ";
+    cout << endl << "Please choose: (0 ~ 6) ";
 
     string userInput;
     getline(cin, userInput);
@@ -48,6 +48,7 @@ int main() {
             cout << "|   Thanks for using, bye!    |" << endl;
             cout << "+-----------------------------+" << endl;
 
+            cout << endl;
             exit(0);
         }
         case 1: {
