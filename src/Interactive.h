@@ -123,6 +123,8 @@ Ticket requestTicket(sqlite_orm::internal::storage_t<Ts...> storage) {
 
     Ticket ticket = Ticket(number, startCity, reachCity, takeOffTime, receiveTime, price, ticketNumber);
     insertTicket(storage, ticket);
+    cout << "Ticket of number " + to_string(ticket.ticketNumber) +  " saved. ";
+
     return ticket;
 }
 
@@ -165,6 +167,12 @@ string queryTickets(sqlite_orm::internal::storage_t<Ts...> storage) {
     return printableList(result);
 }
 
+/**
+ * let user book some ticket(s), update ticket info and return bookNum.
+ *
+ * @param storage need to query ticket
+ * @return bookNum, number of user booked.
+ */
 template<class ...Ts>
 int bookTicket(sqlite_orm::internal::storage_t<Ts...> storage) {
     cout << "Please input the ticket number you want: ";
@@ -216,4 +224,39 @@ int bookTicket(sqlite_orm::internal::storage_t<Ts...> storage) {
     cout << "Lucky! You have booked " + to_string(bookNum) + " ticket(s)! ";
 
     return bookNum;
+}
+
+template<class ...Ts>
+Ticket modifyTicket(sqlite_orm::internal::storage_t<Ts...> storage) {
+    cout << "Please input ticket number to modify: ";
+
+    string userInput;
+    getline(cin, userInput);
+    while (!isPositiveInteger(userInput)) {
+        cout << "Input is not number, please try again: ";
+        getline(cin, userInput);
+    }
+
+    vector<Ticket> result = queryByField(storage, "number", userInput);
+    if (result.empty()) {
+        cout << "There is no ticket of number " + userInput + ", please query first. ";
+        return Ticket();
+    }
+
+    Ticket resultTicket = result[0];
+    cout << "This is ticket " + to_string(resultTicket.ticketNumber) + "'s info. " << endl;
+    cout << printableList(vector<Ticket>{resultTicket});
+
+    cout << "Do you want to modify it? input y / n: ";
+    getline(cin, userInput);
+    while (userInput != "y" && userInput != "n") {
+        cout << "Only can input y / n, please try again: ";
+        getline(cin, userInput);
+    }
+
+    if (userInput == "n") return Ticket();
+
+    Ticket ticket = requestTicket(storage);
+    storage.template remove<Ticket>(resultTicket.id);
+    return ticket;
 }
