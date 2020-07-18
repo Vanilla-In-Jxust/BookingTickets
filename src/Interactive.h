@@ -161,6 +161,59 @@ string queryTickets(sqlite_orm::internal::storage_t<Ts...> storage) {
         getline(cin, userInput);
     }
 
-    vector<Ticket> result = queryTickets(storage, queryField, userInput);
+    vector<Ticket> result = queryByField(storage, queryField, userInput);
     return printableList(result);
+}
+
+template<class ...Ts>
+int bookTicket(sqlite_orm::internal::storage_t<Ts...> storage) {
+    cout << "Please input the ticket number you want: ";
+
+    string userInput;
+    getline(cin, userInput);
+    while (!isPositiveInteger(userInput)) {
+        cout << "Input is not number, please try again: ";
+        getline(cin, userInput);
+    }
+
+    vector<Ticket> result = queryByField(storage, "number", userInput);
+    if (result.empty()) {
+        cout << "There is no ticket of number " + userInput + ", please query first. ";
+        return -1;
+    }
+
+    Ticket ticket = result[0];
+    cout << printableList(vector<Ticket>{ticket});
+
+    cout << "Input your bookNum: ";
+
+    start:
+    getline(cin, userInput);
+    while (!isPositiveInteger(userInput) || userInput == "0") {
+        cout << "Input is not number or illegal, please try again: ";
+        getline(cin, userInput);
+    }
+
+    int bookNum = stoi(userInput);
+    while (bookNum > ticket.ticketNumber) {
+        cout << "bookNum " + userInput + " > stock ticket number " +
+                to_string(ticket.ticketNumber) + ", please try again: ";
+        goto start;
+    }
+
+    cout << "Input your name: ";
+    getline(cin, userInput);
+
+    cout << "Input your id: ";
+    getline(cin, userInput);
+    while (!isChinaId(userInput)) {
+        cout << "Your input is not legal id, please try again: ";
+        getline(cin, userInput);
+    }
+
+    ticket.ticketNumber -= bookNum;
+    storage.update(ticket);
+    cout << "Lucky! You have booked " + to_string(bookNum) + " ticket(s)! ";
+
+    return bookNum;
 }
