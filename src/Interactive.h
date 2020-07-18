@@ -25,7 +25,7 @@ string printableList(const vector<Ticket> &ticketList) {
 
     using namespace fort;
 
-    char_table ticketTable;
+    utf8_table ticketTable;
     ticketTable << header << "Number" << "Start city" << "Reach city" <<
                 "Take off time" << "Receive time" << "Price" << "Ticket number" << endr;
 
