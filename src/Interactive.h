@@ -226,6 +226,12 @@ int bookTicket(sqlite_orm::internal::storage_t<Ts...> storage) {
     return bookNum;
 }
 
+/**
+ * allow user to modify a ticket
+
+ * @param storage need to query ticket
+ * @return modified ticket
+ */
 template<class ...Ts>
 Ticket modifyTicket(sqlite_orm::internal::storage_t<Ts...> storage) {
     cout << "Please input ticket number to modify: ";
@@ -259,4 +265,10 @@ Ticket modifyTicket(sqlite_orm::internal::storage_t<Ts...> storage) {
     Ticket ticket = requestTicket(storage);
     storage.template remove<Ticket>(resultTicket.id);
     return ticket;
+}
+
+template<class ...Ts>
+string showAll(sqlite_orm::internal::storage_t<Ts...> storage) {
+    vector<Ticket> tickets = storage.template get_all<Ticket>();
+    return printableList(tickets);
 }
