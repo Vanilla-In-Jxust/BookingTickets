@@ -7,48 +7,111 @@
 #include "boost/algorithm/string.hpp"
 #include "Validate.h"
 #include "Database.h"
+#include "fort.hpp"
+#include <cctype>
 
 using namespace std;
 
+string printableList(const vector<Ticket> &ticketList) {
+    using namespace fort;
+
+    char_table ticketTable;
+    ticketTable << header << "Number" << "Start city" << "Reach city" <<
+                "Take off time" << "Receive time" << "Price" << "Ticket number" << endr;
+
+    for (const Ticket &ticket : ticketList)
+        ticketTable << ticket.number << ticket.startCity << ticket.reachCity <<
+                    ticket.takeOffTime << ticket.receiveTime << ticket.price << ticket.ticketNumber << endr;
+
+    return ticketTable.to_string();
+}
+
 /**
- * request user input a ticket's info, and return this ticket.
+ * request user input a ticket's info, insert and return this ticket.
  *
  * @return the built ticket object
  */
 template<class ...Ts>
 Ticket requestTicket(sqlite_orm::internal::storage_t<Ts...> storage) {
-    cout << "Please input tickets info to insert, format like " << endl;
-    cout << "\"Start City || Reach City || Take Off || Time Receive || Price || Ticket Number\": " << endl;
+    cout << "Please input the number of the train, 0 is return: ";
 
-    start:
     string userInput;
     getline(cin, userInput);
 
-    vector<string> splitResult;
-    boost::split(splitResult, userInput, boost::is_any_of("||"));
+    vector<Ticket> queryResult = queryByField(storage, "number", userInput);
+    if (userInput == "0") return Ticket();
+    else if (queryResult.size() == 1) {
+        cout << "Ticket of number " + userInput + " is already exist: " << endl;
+        cout << printableList(vector<Ticket>{queryResult[0]});
+        cout << "Consider using modify function to change it. ";
 
-    while (splitResult.size() != 11) {
-        cout << "Input field length is illegal, please try again: ";
-
+        return Ticket();
+    }
+    while (!isPositiveInteger(userInput)) {
+        cout << "number of the train is illegal, please try again: ";
         getline(cin, userInput);
-        boost::split(splitResult, userInput, boost::is_any_of("||"));
+
+        queryResult = queryByField(storage, "number", userInput);
+        if (userInput == "0") return Ticket();
+        else if (queryResult.size() == 1) {
+            cout << "Ticket of number " + userInput + " is already exist: " << endl;
+            cout << printableList(vector<Ticket>{queryResult[0]});
+            cout << "Consider using modify function to change it. ";
+
+            return Ticket();
+        }
     }
+    int number = stoi(userInput);
 
-    string priceString = splitResult[8];
-    string ticketNumberString = splitResult[10];
-
-    // when args are illegal.
-    while (!(isTime(splitResult[4]) && isTime(splitResult[6])
-             && isPositiveDouble(priceString) && isPositiveInteger(ticketNumberString))) {
-        cout << "time format, price or Ticket Number is illegal, please try again: ";
-        goto start;
+    cout << "Input the city where the train will start: ";
+    getline(cin, userInput);
+    while (userInput.find_first_not_of(' ') == string::npos) {
+        cout << "Start city is empty, please try again: ";
+        getline(cin, userInput);
     }
+    string startCity = userInput;
 
-    double price = stod(priceString);
-    int ticketNumber = stoi(ticketNumberString);
+    cout << "Input the city where the train will reach: ";
+    getline(cin, userInput);
+    while (userInput.find_first_not_of(' ') == string::npos) {
+        cout << "Reach city is empty, please try again: ";
+        getline(cin, userInput);
+    }
+    string reachCity = userInput;
 
-    Ticket ticket = Ticket(splitResult[0], splitResult[2], splitResult[4], splitResult[6], price, ticketNumber);
+    cout << "Input the time which the the train take off: (HH:MM) ";
+    getline(cin, userInput);
+    while (!isTime(userInput)) {
+        cout << "Time format is invalid, please try again: (HH:MM) ";
+        getline(cin, userInput);
+    }
+    string takeOffTime = userInput;
+
+    cout << "Input the time which the the train receive: (HH:MM) ";
+    getline(cin, userInput);
+    while (!isTime(userInput)) {
+        cout << "Time format is invalid, please try again: (HH:MM) ";
+        getline(cin, userInput);
+    }
+    string receiveTime = userInput;
+
+    cout << "Input the price of ticket: ";
+    getline(cin, userInput);
+    while (!isPositiveDouble(userInput)) {
+        cout << "Input is illegal, please try again: ";
+        getline(cin, userInput);
+    }
+    double price = stod(userInput);
+
+    cout << "Input the number of booked ticket(s): ";
+    getline(cin, userInput);
+    while (!isPositiveInteger(userInput)) {
+        cout << "Input is illegal, please try again: ";
+        getline(cin, userInput);
+    }
+    int ticketNumber = stoi(userInput);
+
+    Ticket ticket = Ticket(number, startCity, reachCity, takeOffTime, receiveTime, price, ticketNumber);
     insertTicket(storage, ticket);
-
     return ticket;
 }
