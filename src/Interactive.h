@@ -9,6 +9,8 @@
 #include "Database.h"
 #include <cctype>
 
+#include "Weather.h"
+
 using namespace std;
 
 /**
@@ -260,8 +262,18 @@ void showUsage() {
     cout << "|       5: Show the train information.          |" << endl;
     cout << "|       6: Save information to file.            |" << endl;
     cout << "+-----------------------------------------------+" << endl;
+    cout << "|       7: Query weather condition.             |" << endl;
+    cout << "+-----------------------------------------------+" << endl;
 }
 
 string queryWeather() {
-    return "";
+    cout << "Input place name to find: ";
+
+    string userInput;
+    getline(cin, userInput);
+
+    vector<Weather> weatherList = getWeatherList(userInput);
+    if (weatherList.empty()) return "Cannot query any weather info of \"" + userInput + "\". \n";
+
+    return printableWeatherList(weatherList);
 }

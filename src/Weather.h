@@ -104,9 +104,10 @@ string printableWeatherList(const vector<Weather> &weatherList) {
 
     utf8_table weatherTable;
 
-    for (int i = 0; i < 5; ++i)
+    for (int i = 0; i < 3; ++i)
         weatherTable.column(i).set_cell_text_align(text_align::center);
 
+    cout << endl;
     weatherTable << header << "Date" << "Avg Temperature" << "Avg PM 2.5" << "Weather Condition" << endr;
     for (const Weather &weather: weatherList)
         weatherTable << weather.date << fmt::format("{:.2f}", weather.temperatureAvg) + " °C"

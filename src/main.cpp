@@ -1,5 +1,4 @@
 #include "Interactive.h"
-#include "Weather.h"
 
 using namespace std;
 
@@ -32,7 +31,7 @@ int main() {
     start:
     system("clear");
     showUsage();
-    cout << endl << "Please choose: (0 ~ 6) ";
+    cout << endl << "Please choose: (0 ~ 7) ";
 
     string userInput;
 
@@ -44,7 +43,7 @@ int main() {
     }
 
     int inputNumber = stoi(userInput);
-    if (inputNumber > 6) {
+    if (inputNumber > 7) {
         cout << "Input number can only be 0 ~ 6, please try again: ";
         goto input;
     }
@@ -93,6 +92,11 @@ int main() {
             goto start;
         }
 
+        case 7: {
+            cout << queryWeather();
+            pressToBack();
+            goto start;
+        }
         default: {
             system("clear");
             cout << "Whoops, something is wrong... " << endl;
