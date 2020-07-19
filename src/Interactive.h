@@ -275,5 +275,8 @@ string queryWeather() {
     vector<Weather> weatherList = getWeatherList(userInput);
     if (weatherList.empty()) return "Cannot query any weather info of \"" + userInput + "\". \n";
 
+    string location = getLocation(getCoordinate(userInput));
+    cout << endl << "Here is the weather info of \"" + location + "\": ";
+
     return printableWeatherList(weatherList);
 }

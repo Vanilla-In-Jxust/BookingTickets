@@ -12,6 +12,8 @@
 #include "fmt/core.h"
 
 using namespace std;
+#pragma ide diagnostic ignored "cert-err58-cpp"
+const string GEO_API_KEY = "4ea6a42cd57fd368acd56c1cb2fd51a1";
 
 class Weather {
 public:
@@ -35,9 +37,9 @@ public:
  * @param location, example: "北京"
  * @return empty string if no result.
  */
+
 string getCoordinate(const string &location) {
     const string GEO_API_BASE = "https://restapi.amap.com/v3/geocode/geo";
-    const string GEO_API_KEY = "4ea6a42cd57fd368acd56c1cb2fd51a1";
 
     auto request = cpr::Get(cpr::Url{GEO_API_BASE},
                             cpr::Parameters{{"key",     GEO_API_KEY},
@@ -115,4 +117,21 @@ string printableWeatherList(const vector<Weather> &weatherList) {
                      << SKY_CON_MAP.find(weather.skyConValue)->second << endr;
 
     return weatherTable.to_string();
+}
+
+string getLocation(const string &coordinate) {
+    const string GEO_API_BASE = "https://restapi.amap.com/v3/geocode/regeo";
+
+    auto request = cpr::Get(cpr::Url{GEO_API_BASE},
+                            cpr::Parameters{{"key",      GEO_API_KEY},
+                                            {"location", coordinate}});
+
+    Json::Value json;
+    istringstream requestStringStream(request.text);
+    requestStringStream >> json;
+
+    if (json["status"].asString() == "1")
+        return json["regeocode"]["formatted_address"].asString();
+
+    return "";
 }
