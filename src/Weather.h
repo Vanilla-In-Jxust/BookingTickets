@@ -9,6 +9,8 @@
 #include "boost/assign/list_of.hpp"
 #include "boost/unordered_map.hpp"
 
+#include "fmt/core.h"
+
 using namespace std;
 
 class Weather {
@@ -107,8 +109,8 @@ string printableWeatherList(const vector<Weather> &weatherList) {
 
     weatherTable << header << "Date" << "Avg Temperature" << "Avg PM 2.5" << "Weather Condition" << endr;
     for (const Weather &weather: weatherList)
-        weatherTable << weather.date << to_string(weather.temperatureAvg) + " °C"
-                     << to_string(weather.airQualityPm25Avg) + " μg / m ^ 3"
+        weatherTable << weather.date << fmt::format("{:.2f}", weather.temperatureAvg) + " °C"
+                     << fmt::format("{:.2f}", weather.airQualityPm25Avg) + " μg / m³"
                      << SKY_CON_MAP.find(weather.skyConValue)->second << endr;
 
     return weatherTable.to_string();
