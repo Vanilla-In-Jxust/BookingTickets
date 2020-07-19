@@ -1,4 +1,5 @@
 #include "Interactive.h"
+#include "../hash-library/sha256.h"
 
 using namespace std;
 
@@ -51,9 +52,13 @@ int main() {
     switch (inputNumber) {
         case 0: {
             cout << endl;
-            cout << "+-----------------------------+" << endl;
-            cout << "|   Thanks for using, bye!    |" << endl;
-            cout << "+-----------------------------+" << endl;
+
+            using namespace fort;
+            char_table byeTable;
+            byeTable.set_border_style(FT_DOUBLE_STYLE);
+
+            byeTable << header << "   Thanks for using, bye!   " << endr;
+            cout << byeTable.to_string();
 
             cout << endl;
             exit(0);
@@ -105,3 +110,7 @@ int main() {
     }
 }
 
+/*int main() {
+    SHA256 sha256;
+    cout << sha256("admin") << endl;
+}*/

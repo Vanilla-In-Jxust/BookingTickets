@@ -251,19 +251,23 @@ Ticket modifyTicket(sqlite_orm::internal::storage_t<Ts...> storage) {
  * Just show the usage dialog.
  */
 void showUsage() {
-    cout << "+-----------------------------------------------+" << endl;
-    cout << "|                Booking Tickets                |" << endl;
-    cout << "+-----------------------------------------------+" << endl;
-    cout << "|       0: quit the system.                     |" << endl;
-    cout << "|       1: Insert a train information.          |" << endl;
-    cout << "|       2: Search a train information.          |" << endl;
-    cout << "|       3: Book a train ticket.                 |" << endl;
-    cout << "|       4. Modify the train information.        |" << endl;
-    cout << "|       5: Show the train information.          |" << endl;
-    cout << "|       6: Save information to file.            |" << endl;
-    cout << "+-----------------------------------------------+" << endl;
-    cout << "|       7: Query weather condition.             |" << endl;
-    cout << "+-----------------------------------------------+" << endl;
+    using namespace fort;
+
+    utf8_table usageTable;
+    usageTable.set_border_style(FT_DOUBLE_STYLE);
+
+    usageTable << header << "Booking Tickets System" << endr;
+
+    usageTable << "0: quit the system. " << endr;
+    usageTable << "1: Insert a train information. " << endr;
+    usageTable << "2: Search a train information. " << endr;
+    usageTable << "3: Book a train ticket. " << endr;
+    usageTable << "4. Modify the train information. " << endr;
+    usageTable << "5: Show the train information. " << endr;
+    usageTable << "6: Save information to file. " << endr;
+    usageTable << header << "7: Query weather condition." << endr;
+
+    cout << usageTable.to_string();
 }
 
 string queryWeather() {
@@ -271,6 +275,8 @@ string queryWeather() {
 
     string userInput;
     getline(cin, userInput);
+
+    cout << "querying... please wait..." << endl;
 
     vector<Weather> weatherList = getWeatherList(userInput);
     if (weatherList.empty()) return "Cannot query any weather info of \"" + userInput + "\". \n";

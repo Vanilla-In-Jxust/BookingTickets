@@ -74,6 +74,7 @@ string printableTicketList(const vector<Ticket> &ticketList) {
     for (int i = 1; i < 5; ++i)
         ticketTable.column(i).set_cell_text_align(text_align::center);
 
+    ticketTable.set_border_style(FT_DOUBLE2_STYLE);
     cout << endl;
     ticketTable << header << "Number" << "Start city" << "Reach city" <<
                 "Take off time" << "Receive time" << "Price (￥)" << "Ticket number" << endr;

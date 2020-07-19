@@ -22,13 +22,23 @@ public:
     double airQualityPm25Avg = -1;
     string skyConValue = "undefined";
 
+    // "result", "daily", "life_index" section.
+    string ultraviolet = "undefined";
+    string carWashing = "undefined";
+    string dressing = "undefined";
+    string comfort = "undefined";
+    string coldRisk = "undefined";
+
     // @NoArgsConstructor
     Weather() = default;
 
     // @AllArgsConstructor
-    Weather(string date, double temperatureAvg, double airQualityPm25Avg, string skyConValue) :
+    Weather(string date, double temperatureAvg, double airQualityPm25Avg, string skyConValue,
+            string ultraviolet, string carWashing, string dressing, string comfort, string coldRisk) :
             date(move(date)), temperatureAvg(temperatureAvg),
-            airQualityPm25Avg(airQualityPm25Avg), skyConValue(move(skyConValue)) {}
+            airQualityPm25Avg(airQualityPm25Avg), skyConValue(move(skyConValue)),
+            ultraviolet(move(ultraviolet)), carWashing(move(carWashing)), dressing(move(dressing)),
+            comfort(move(comfort)), coldRisk(move(coldRisk)) {}
 };
 
 /**
@@ -85,7 +95,17 @@ vector<Weather> getWeatherList(const string &location) {
         double airQualityPm25Avg = dailyJson["air_quality"]["pm25"][i]["avg"].asDouble();
         string skyConValue = dailyJson["skycon"][i]["value"].asString();
 
-        Weather weather = Weather(date, temperatureAvg, airQualityPm25Avg, skyConValue);
+        Json::Value lifeIndexJson = dailyJson["life_index"];
+
+        string ultraviolet = lifeIndexJson["ultraviolet"][i]["desc"].asString();
+        string carWashing = lifeIndexJson["carWashing"][i]["desc"].asString();
+        string dressing = lifeIndexJson["dressing"][i]["desc"].asString();
+        string comfort = lifeIndexJson["comfort"][i]["desc"].asString();
+        string coldRisk = lifeIndexJson["coldRisk"][i]["desc"].asString();
+
+
+        Weather weather = Weather(date, temperatureAvg, airQualityPm25Avg, skyConValue,
+                                  ultraviolet, carWashing, dressing, comfort, coldRisk);
         weatherList.push_back(weather);
     }
     return weatherList;
@@ -110,13 +130,23 @@ string printableWeatherList(const vector<Weather> &weatherList) {
         weatherTable.column(i).set_cell_text_align(text_align::center);
 
     cout << endl;
+    weatherTable.set_border_style(FT_DOUBLE_STYLE);
     weatherTable << header << "Date" << "Avg Temperature" << "Avg PM 2.5" << "Weather Condition" << endr;
-    for (const Weather &weather: weatherList)
+
+    utf8_table indexTable;
+    indexTable.set_border_style(FT_DOUBLE_STYLE);
+    indexTable << header << "洗车指数" << "感冒指数" << "舒适度指数" << "穿衣指数" << "紫外线指数" << endr;
+
+    for (const Weather &weather: weatherList) {
         weatherTable << weather.date << fmt::format("{:.2f}", weather.temperatureAvg) + " °C"
                      << fmt::format("{:.2f}", weather.airQualityPm25Avg) + " μg / m³"
                      << SKY_CON_MAP.find(weather.skyConValue)->second << endr;
 
-    return weatherTable.to_string();
+        indexTable << weather.carWashing << weather.coldRisk << weather.comfort
+                   << weather.dressing << weather.ultraviolet << endr;
+    }
+
+    return weatherTable.to_string() + "\n Life index: \n" + indexTable.to_string();
 }
 
 string getLocation(const string &coordinate) {

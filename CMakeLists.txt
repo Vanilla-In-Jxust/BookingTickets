@@ -3,7 +3,10 @@ project(BookingTickets)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(BookingTickets src/main.cpp src/Ticket.h src/Database.h src/Validate.h src/Interactive.h src/Weather.h)
+add_executable(BookingTickets src/main.cpp
+        src/Ticket.h src/Weather.h
+        src/Database.h src/Validate.h src/Interactive.h
+        hash-library/sha256.h hash-library/sha256.cpp)
 
 # orm framework need sqlite3 library.
 find_package(libfort)
