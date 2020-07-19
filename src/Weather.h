@@ -103,7 +103,6 @@ vector<Weather> getWeatherList(const string &location) {
         string comfort = lifeIndexJson["comfort"][i]["desc"].asString();
         string coldRisk = lifeIndexJson["coldRisk"][i]["desc"].asString();
 
-
         Weather weather = Weather(date, temperatureAvg, airQualityPm25Avg, skyConValue,
                                   ultraviolet, carWashing, dressing, comfort, coldRisk);
         weatherList.push_back(weather);
@@ -135,14 +134,14 @@ string printableWeatherList(const vector<Weather> &weatherList) {
 
     utf8_table indexTable;
     indexTable.set_border_style(FT_DOUBLE_STYLE);
-    indexTable << header << "洗车指数" << "感冒指数" << "舒适度指数" << "穿衣指数" << "紫外线指数" << endr;
+    indexTable << header << "Date" << "洗车指数" << "感冒指数" << "舒适度指数" << "穿衣指数" << "紫外线指数" << endr;
 
     for (const Weather &weather: weatherList) {
         weatherTable << weather.date << fmt::format("{:.2f}", weather.temperatureAvg) + " °C"
                      << fmt::format("{:.2f}", weather.airQualityPm25Avg) + " μg / m³"
                      << SKY_CON_MAP.find(weather.skyConValue)->second << endr;
 
-        indexTable << weather.carWashing << weather.coldRisk << weather.comfort
+        indexTable << weather.date << weather.carWashing << weather.coldRisk << weather.comfort
                    << weather.dressing << weather.ultraviolet << endr;
     }
 
