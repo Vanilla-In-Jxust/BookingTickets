@@ -6,6 +6,7 @@
 #include "boost/lexical_cast.hpp"
 #include "iomanip"
 #include "json/json.h"
+#include "fort.hpp"
 
 using namespace std;
 
@@ -54,3 +55,31 @@ public:
         return ticketJson;
     }
 };
+
+/**
+ * generate a list string of given tickets,
+ * return no ticket info if list is empty.
+ *
+ * @param ticketList to generate string.
+ * @return printable list string of ticket list.
+ * @see https://github.com/seleznevae/libfort
+ */
+string printableTicketList(const vector<Ticket> &ticketList) {
+    if (ticketList.empty()) return "There is no ticket to show, consider insert first. ";
+
+    using namespace fort;
+
+    utf8_table ticketTable;
+
+    for (int i = 1; i < 5; ++i)
+        ticketTable.column(i).set_cell_text_align(text_align::center);
+
+    ticketTable << header << "Number" << "Start city" << "Reach city" <<
+                "Take off time" << "Receive time" << "Price" << "Ticket number" << endr;
+
+    for (const Ticket &ticket : ticketList)
+        ticketTable << ticket.number << ticket.startCity << ticket.reachCity <<
+                    ticket.takeOffTime << ticket.receiveTime << ticket.price << ticket.ticketNumber << endr;
+
+    return ticketTable.to_string();
+}

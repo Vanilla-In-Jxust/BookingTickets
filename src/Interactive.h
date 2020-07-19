@@ -7,38 +7,9 @@
 #include "boost/algorithm/string.hpp"
 #include "Validate.h"
 #include "Database.h"
-#include "fort.hpp"
 #include <cctype>
 
 using namespace std;
-
-/**
- * generate a list string of given tickets,
- * return no ticket info if list is empty.
- *
- * @param ticketList to generate string.
- * @return printable list string of ticket list.
- * @see https://github.com/seleznevae/libfort
- */
-string printableList(const vector<Ticket> &ticketList) {
-    if (ticketList.empty()) return "There is no ticket to show, consider insert first. ";
-
-    using namespace fort;
-
-    utf8_table ticketTable;
-
-    for (int i = 1; i < 5; ++i)
-        ticketTable.column(i).set_cell_text_align(text_align::center);
-
-    ticketTable << header << "Number" << "Start city" << "Reach city" <<
-                "Take off time" << "Receive time" << "Price" << "Ticket number" << endr;
-
-    for (const Ticket &ticket : ticketList)
-        ticketTable << ticket.number << ticket.startCity << ticket.reachCity <<
-                    ticket.takeOffTime << ticket.receiveTime << ticket.price << ticket.ticketNumber << endr;
-
-    return ticketTable.to_string();
-}
 
 /**
  * request user input a ticket's info, insert and return this ticket.
@@ -56,7 +27,7 @@ Ticket requestTicket(sqlite_orm::internal::storage_t<Ts...> storage) {
     if (userInput == "0") return Ticket();
     else if (queryResult.size() == 1) {
         cout << "Ticket of number " + userInput + " is already exist: " << endl;
-        cout << printableList(vector<Ticket>{queryResult[0]});
+        cout << printableTicketList(vector<Ticket>{queryResult[0]});
         cout << "Consider using modify function to change it. ";
 
         return Ticket();
@@ -69,7 +40,7 @@ Ticket requestTicket(sqlite_orm::internal::storage_t<Ts...> storage) {
         if (userInput == "0") return Ticket();
         else if (queryResult.size() == 1) {
             cout << "Ticket of number " + userInput + " is already exist: " << endl;
-            cout << printableList(vector<Ticket>{queryResult[0]});
+            cout << printableTicketList(vector<Ticket>{queryResult[0]});
             cout << "Consider using modify function to change it. ";
 
             return Ticket();
@@ -168,7 +139,7 @@ string searchTickets(sqlite_orm::internal::storage_t<Ts...> storage) {
     }
 
     vector<Ticket> result = queryByField(storage, queryField, userInput);
-    return printableList(result);
+    return printableTicketList(result);
 }
 
 /**
@@ -195,7 +166,7 @@ int bookTicket(sqlite_orm::internal::storage_t<Ts...> storage) {
     }
 
     Ticket ticket = result[0];
-    cout << printableList(vector<Ticket>{ticket});
+    cout << printableTicketList(vector<Ticket>{ticket});
 
     cout << "Input your bookNum: ";
 
@@ -255,7 +226,7 @@ Ticket modifyTicket(sqlite_orm::internal::storage_t<Ts...> storage) {
 
     Ticket resultTicket = result[0];
     cout << "This is ticket " + to_string(resultTicket.ticketNumber) + "'s info. " << endl;
-    cout << printableList(vector<Ticket>{resultTicket});
+    cout << printableTicketList(vector<Ticket>{resultTicket});
 
     cout << "Do you want to modify it? input y / n: ";
     getline(cin, userInput);
