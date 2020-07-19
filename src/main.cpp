@@ -1,4 +1,5 @@
 #include "Interactive.h"
+#include "Weather.h"
 
 using namespace std;
 
@@ -24,7 +25,7 @@ void insertExampleData(sqlite_orm::internal::storage_t<Ts...> storage) {
     storage.insert(Ticket(1329, "南昌", "长沙", "17:29", "19:14", 264.5, 17));
 }
 
-int main() {
+/*int main() {
     auto storage = initDatabase();
     insertExampleData(storage);
 
@@ -91,4 +92,12 @@ int main() {
             exit(-1);
         }
     }
+}*/
+
+
+int main() {
+    vector<Weather> weatherList = getWeatherList("江西理工大学");
+    cout << printableWeatherList(weatherList);
+
+    return 0;
 }

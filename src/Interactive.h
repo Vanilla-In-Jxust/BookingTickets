@@ -287,3 +287,7 @@ void showUsage() {
     cout << "|       6: Save information to file.            |" << endl;
     cout << "+-----------------------------------------------+" << endl;
 }
+
+string queryWeather() {
+    return "";
+}
