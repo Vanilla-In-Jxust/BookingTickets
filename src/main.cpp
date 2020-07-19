@@ -32,7 +32,7 @@ int main() {
     start:
     system("clear");
     showUsage();
-    cout << endl << "Please choose: (0 ~ 7) ";
+    cout << endl << "Please choose (0 ~ 7): ";
 
     string userInput;
 

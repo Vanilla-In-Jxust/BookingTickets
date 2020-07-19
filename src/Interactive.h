@@ -82,7 +82,7 @@ Ticket requestTicket(sqlite_orm::internal::storage_t<Ts...> storage) {
     }
     string receiveTime = userInput;
 
-    cout << "Input the price of ticket: ";
+    cout << "Input the price of ticket (￥): ";
     getline(cin, userInput);
     while (!isPositiveDouble(userInput)) {
         cout << "Input is illegal, please try again: ";
@@ -100,7 +100,7 @@ Ticket requestTicket(sqlite_orm::internal::storage_t<Ts...> storage) {
 
     Ticket ticket = Ticket(number, startCity, reachCity, takeOffTime, receiveTime, price, ticketNumber);
     insertTicket(storage, ticket);
-    cout << endl << "Ticket of number " + to_string(ticket.ticketNumber) +  " saved. " << endl;
+    cout << endl << "Ticket of number " + to_string(ticket.number) + " saved. " << endl;
 
     return ticket;
 }
@@ -113,9 +113,15 @@ Ticket requestTicket(sqlite_orm::internal::storage_t<Ts...> storage) {
  */
 template<class ...Ts>
 string searchTickets(sqlite_orm::internal::storage_t<Ts...> storage) {
-    cout << "1 - query by the number of train. " << endl
-         << "2 - query by the city. " << endl
-         << "Choose the way to query: ";
+    using namespace fort;
+    char_table chooseTable;
+    chooseTable.set_border_style(FT_DOUBLE_STYLE);
+
+    chooseTable << header << "1 - query by the number of train. " << endr;
+    chooseTable << header << "2 - query by the city. " << endr;
+
+    cout << endl << chooseTable.to_string();
+    cout << "Choose the way to query: ";
 
     string userInput, queryField;
     getline(cin, userInput);
@@ -242,7 +248,7 @@ Ticket modifyTicket(sqlite_orm::internal::storage_t<Ts...> storage) {
 
     storage.template remove<Ticket>(resultTicket.id);
     Ticket ticket = requestTicket(storage);
-    if (ticket.id == -1) storage.insert(resultTicket);
+    if (ticket.id == -1) insertTicket(storage, resultTicket);
 
     return ticket;
 }
