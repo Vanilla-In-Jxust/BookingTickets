@@ -25,7 +25,7 @@ void insertExampleData(sqlite_orm::internal::storage_t<Ts...> storage) {
     storage.insert(Ticket(1329, "南昌", "长沙", "17:29", "19:14", 264.5, 17));
 }
 
-/*int main() {
+int main() {
     auto storage = initDatabase();
     insertExampleData(storage);
 
@@ -35,13 +35,20 @@ void insertExampleData(sqlite_orm::internal::storage_t<Ts...> storage) {
     cout << endl << "Please choose: (0 ~ 6) ";
 
     string userInput;
+
+    input:
     getline(cin, userInput);
     while (!isPositiveInteger(userInput)) {
-        cout << "Only can input number, please try again: ";
+        cout << "Only can input positive number, please try again: ";
         getline(cin, userInput);
     }
 
     int inputNumber = stoi(userInput);
+    if (inputNumber > 6) {
+        cout << "Input number can only be 0 ~ 6, please try again: ";
+        goto input;
+    }
+
     switch (inputNumber) {
         case 0: {
             cout << endl;
@@ -74,7 +81,7 @@ void insertExampleData(sqlite_orm::internal::storage_t<Ts...> storage) {
         }
         case 5: {
             vector<Ticket> tickets = storage.template get_all<Ticket>();
-            cout << printableList(tickets) << endl;
+            cout << printableTicketList(tickets);
 
             pressToBack();
             goto start;
@@ -92,12 +99,5 @@ void insertExampleData(sqlite_orm::internal::storage_t<Ts...> storage) {
             exit(-1);
         }
     }
-}*/
-
-
-int main() {
-    vector<Weather> weatherList = getWeatherList("江西理工大学");
-    cout << printableWeatherList(weatherList);
-
-    return 0;
 }
+

@@ -98,7 +98,7 @@ Ticket requestTicket(sqlite_orm::internal::storage_t<Ts...> storage) {
 
     Ticket ticket = Ticket(number, startCity, reachCity, takeOffTime, receiveTime, price, ticketNumber);
     insertTicket(storage, ticket);
-    cout << "Ticket of number " + to_string(ticket.ticketNumber) +  " saved. " << endl;
+    cout << endl << "Ticket of number " + to_string(ticket.ticketNumber) +  " saved. " << endl;
 
     return ticket;
 }
@@ -123,7 +123,7 @@ string searchTickets(sqlite_orm::internal::storage_t<Ts...> storage) {
     }
 
     if (userInput == "1") {
-        queryField = "ticketNumber";
+        queryField = "number";
         cout << "Input the number of train: ";
 
         getline(cin, userInput);
@@ -196,7 +196,7 @@ int bookTicket(sqlite_orm::internal::storage_t<Ts...> storage) {
 
     ticket.ticketNumber -= bookNum;
     storage.update(ticket);
-    cout << "Lucky! You have booked " + to_string(bookNum) + " ticket(s)! ";
+    cout << "Lucky! You have booked " + to_string(bookNum) + " ticket(s)! " << endl;
 
     return bookNum;
 }
@@ -225,7 +225,7 @@ Ticket modifyTicket(sqlite_orm::internal::storage_t<Ts...> storage) {
     }
 
     Ticket resultTicket = result[0];
-    cout << "This is ticket " + to_string(resultTicket.ticketNumber) + "'s info. " << endl;
+    cout << endl << "This is ticket " + to_string(resultTicket.ticketNumber) + "'s info: ";
     cout << printableTicketList(vector<Ticket>{resultTicket});
 
     cout << "Do you want to modify it? input y / n: ";
@@ -236,9 +236,12 @@ Ticket modifyTicket(sqlite_orm::internal::storage_t<Ts...> storage) {
     }
 
     if (userInput == "n") return Ticket();
+    cout << endl;
 
-    Ticket ticket = requestTicket(storage);
     storage.template remove<Ticket>(resultTicket.id);
+    Ticket ticket = requestTicket(storage);
+    if (ticket.id == -1) storage.insert(resultTicket);
+
     return ticket;
 }
 
