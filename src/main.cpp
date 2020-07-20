@@ -109,8 +109,3 @@ int main() {
         }
     }
 }
-
-/*int main() {
-    SHA256 sha256;
-    cout << sha256("admin") << endl;
-}*/
