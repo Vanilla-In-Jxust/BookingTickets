@@ -13,6 +13,30 @@
 
 using namespace std;
 
+template<class ...Ts>
+string getUserInput(storage_t<Ts...> storage) {
+    string userInput;
+
+    if (cin.eof()) {
+        storage.sync_schema();
+        using namespace fort;
+
+        utf8_table eolTable;
+        eolTable.set_border_style(FT_DOUBLE_STYLE);
+
+        eolTable << "Detected EOL, stdin closed. " << endr;
+        eolTable << "Database synced successfully. " << endr;
+        eolTable << "Exit with code 255. " << endr;
+
+        cout << endl << eolTable.to_string() << endl;
+
+        exit(255);
+    }
+
+    getline(cin, userInput);
+    return userInput;
+}
+
 /**
  * request user input a ticket's info, insert and return this ticket.
  *
@@ -22,8 +46,7 @@ template<class ...Ts>
 Ticket requestTicket(sqlite_orm::internal::storage_t<Ts...> storage) {
     cout << "Please input the number of the train, 0 is return: ";
 
-    string userInput;
-    getline(cin, userInput);
+    string userInput = getUserInput(storage);
 
     vector<Ticket> queryResult = queryByField(storage, "number", userInput);
     if (userInput == "0") return Ticket();
@@ -36,7 +59,7 @@ Ticket requestTicket(sqlite_orm::internal::storage_t<Ts...> storage) {
     }
     while (!isPositiveInteger(userInput)) {
         cout << "number of the train is illegal, please try again: ";
-        getline(cin, userInput);
+        userInput = getUserInput(storage);
 
         queryResult = queryByField(storage, "number", userInput);
         if (userInput == "0") return Ticket();
@@ -51,50 +74,50 @@ Ticket requestTicket(sqlite_orm::internal::storage_t<Ts...> storage) {
     int number = stoi(userInput);
 
     cout << "Input the city where the train will start: ";
-    getline(cin, userInput);
+    userInput = getUserInput(storage);
     while (userInput.find_first_not_of(' ') == string::npos) {
         cout << "Start city is empty, please try again: ";
-        getline(cin, userInput);
+        userInput = getUserInput(storage);
     }
     string startCity = userInput;
 
     cout << "Input the city where the train will reach: ";
-    getline(cin, userInput);
+    userInput = getUserInput(storage);
     while (userInput.find_first_not_of(' ') == string::npos) {
         cout << "Reach city is empty, please try again: ";
-        getline(cin, userInput);
+        userInput = getUserInput(storage);
     }
     string reachCity = userInput;
 
     cout << "Input the time which the the train take off: (HH:MM) ";
-    getline(cin, userInput);
+    userInput = getUserInput(storage);
     while (!isTime(userInput)) {
         cout << "Time format is invalid, please try again: (HH:MM) ";
-        getline(cin, userInput);
+        userInput = getUserInput(storage);
     }
     string takeOffTime = userInput;
 
     cout << "Input the time which the the train receive: (HH:MM) ";
-    getline(cin, userInput);
+    userInput = getUserInput(storage);
     while (!isTime(userInput)) {
         cout << "Time format is invalid, please try again: (HH:MM) ";
-        getline(cin, userInput);
+        userInput = getUserInput(storage);
     }
     string receiveTime = userInput;
 
     cout << "Input the price of ticket (￥): ";
-    getline(cin, userInput);
+    userInput = getUserInput(storage);
     while (!isPositiveDouble(userInput)) {
         cout << "Input is illegal, please try again: ";
-        getline(cin, userInput);
+        userInput = getUserInput(storage);
     }
     double price = stod(userInput);
 
     cout << "Input the number of booked ticket(s): ";
-    getline(cin, userInput);
+    userInput = getUserInput(storage);
     while (!isPositiveInteger(userInput)) {
         cout << "Input is illegal, please try again: ";
-        getline(cin, userInput);
+        userInput = getUserInput(storage);
     }
     int ticketNumber = stoi(userInput);
 
@@ -124,26 +147,26 @@ string searchTickets(sqlite_orm::internal::storage_t<Ts...> storage) {
     cout << "Choose the way to query: ";
 
     string userInput, queryField;
-    getline(cin, userInput);
+    userInput = getUserInput(storage);
     while (userInput != "1" && userInput != "2") {
         cout << R"(Input can only be "1" or "2", please try again: )";
-        getline(cin, userInput);
+        userInput = getUserInput(storage);
     }
 
     if (userInput == "1") {
         queryField = "number";
         cout << "Input the number of train: ";
 
-        getline(cin, userInput);
+        userInput = getUserInput(storage);
         while (!isPositiveInteger(userInput)) {
             cout << "Input is invalid, please try again: ";
-            getline(cin, userInput);
+            userInput = getUserInput(storage);
         }
     } else if (userInput == "2") {
         queryField = "reachCity";
         cout << "Input the city: ";
 
-        getline(cin, userInput);
+        userInput = getUserInput(storage);
     }
 
     vector<Ticket> result = queryByField(storage, queryField, userInput);
@@ -161,10 +184,10 @@ int bookTicket(sqlite_orm::internal::storage_t<Ts...> storage) {
     cout << "Please input the ticket number you want: ";
 
     string userInput;
-    getline(cin, userInput);
+    userInput = getUserInput(storage);
     while (!isPositiveInteger(userInput)) {
         cout << "Input is not number, please try again: ";
-        getline(cin, userInput);
+        userInput = getUserInput(storage);
     }
 
     vector<Ticket> result = queryByField(storage, "number", userInput);
@@ -179,10 +202,10 @@ int bookTicket(sqlite_orm::internal::storage_t<Ts...> storage) {
     cout << "Input your bookNum: ";
 
     start:
-    getline(cin, userInput);
+    userInput = getUserInput(storage);
     while (!isPositiveInteger(userInput) || userInput == "0") {
         cout << "Input is not number or illegal, please try again: ";
-        getline(cin, userInput);
+        userInput = getUserInput(storage);
     }
 
     int bookNum = stoi(userInput);
@@ -193,13 +216,13 @@ int bookTicket(sqlite_orm::internal::storage_t<Ts...> storage) {
     }
 
     cout << "Input your name: ";
-    getline(cin, userInput);
+    userInput = getUserInput(storage);
 
     cout << "Input your id: ";
-    getline(cin, userInput);
+    userInput = getUserInput(storage);
     while (!isChinaId(userInput)) {
         cout << "Your input is not legal id, please try again: ";
-        getline(cin, userInput);
+        userInput = getUserInput(storage);
     }
 
     ticket.ticketNumber -= bookNum;
@@ -220,10 +243,10 @@ Ticket modifyTicket(sqlite_orm::internal::storage_t<Ts...> storage) {
     cout << "Please input ticket number to modify: ";
 
     string userInput;
-    getline(cin, userInput);
+    userInput = getUserInput(storage);
     while (!isPositiveInteger(userInput)) {
         cout << "Input is not number, please try again: ";
-        getline(cin, userInput);
+        userInput = getUserInput(storage);
     }
 
     vector<Ticket> result = queryByField(storage, "number", userInput);
@@ -237,10 +260,10 @@ Ticket modifyTicket(sqlite_orm::internal::storage_t<Ts...> storage) {
     cout << printableTicketList(vector<Ticket>{resultTicket});
 
     cout << "Do you want to modify it? input y / n: ";
-    getline(cin, userInput);
+    userInput = getUserInput(storage);
     while (userInput != "y" && userInput != "n") {
         cout << "Only can input y / n, please try again: ";
-        getline(cin, userInput);
+        userInput = getUserInput(storage);
     }
 
     if (userInput == "n") return Ticket();
@@ -276,11 +299,12 @@ void showUsage() {
     cout << usageTable.to_string();
 }
 
-string queryWeather() {
+template<class ...Ts>
+string queryWeather(storage_t<Ts...> storage) {
     cout << "Input place name to find: ";
 
     string userInput;
-    getline(cin, userInput);
+    userInput = getUserInput(storage);
 
     cout << "querying... please wait..." << endl;
 

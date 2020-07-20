@@ -37,10 +37,10 @@ int main() {
     string userInput;
 
     input:
-    getline(cin, userInput);
+    userInput = getUserInput(storage);
     while (!isPositiveInteger(userInput)) {
         cout << "Only can input positive number, please try again: ";
-        getline(cin, userInput);
+        userInput = getUserInput(storage);
     }
 
     int inputNumber = stoi(userInput);
@@ -98,7 +98,7 @@ int main() {
         }
 
         case 7: {
-            cout << queryWeather();
+            cout << queryWeather(storage);
             pressToBack();
             goto start;
         }
