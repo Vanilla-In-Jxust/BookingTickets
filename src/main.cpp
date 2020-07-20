@@ -18,6 +18,8 @@ void pressToBack() {
  */
 template<class ...Ts>
 void insertExampleData(sqlite_orm::internal::storage_t<Ts...> storage) {
+    storage.template remove_all<Ticket>();
+
     storage.insert(Ticket(2292, "南昌", "武汉", "20:53", "23:05", 171.0, 17));
     storage.insert(Ticket(90, "武昌", "新乡", "01:15", "06:50", 86.0, 20));
     storage.insert(Ticket(2036, "南昌", "汉口", "17:55", "20:34", 360.5, 10));
