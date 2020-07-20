@@ -1,6 +1,9 @@
 #include "Interactive.h"
 #include "../hash-library/sha256.h"
 
+#include "csignal"
+#include "fort.hpp"
+
 using namespace std;
 
 /**
@@ -28,6 +31,19 @@ void insertExampleData(sqlite_orm::internal::storage_t<Ts...> storage) {
 }
 
 int main() {
+    signal(SIGINT, [](int signal){
+        initDatabase().sync_schema();
+
+        fort::utf8_table sigintTable;
+        sigintTable.set_border_style(FT_SOLID_ROUND_STYLE);
+
+        sigintTable << "SIGINT signal detected. " << fort::endr;
+        sigintTable << "Sync database & exit. " << fort::endr;
+
+        cout << endl << endl << sigintTable.to_string() << endl;
+        exit(0);
+    });
+
     auto storage = initDatabase();
     insertExampleData(storage);
 
@@ -57,7 +73,7 @@ int main() {
 
             using namespace fort;
             char_table byeTable;
-            byeTable.set_border_style(FT_DOUBLE_STYLE);
+            byeTable.set_border_style(FT_SOLID_ROUND_STYLE);
 
             byeTable << header << "   Thanks for using, bye!   " << endr;
             cout << byeTable.to_string();

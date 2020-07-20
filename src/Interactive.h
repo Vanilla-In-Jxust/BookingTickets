@@ -22,13 +22,13 @@ string getUserInput(storage_t<Ts...> storage) {
         using namespace fort;
 
         utf8_table eolTable;
-        eolTable.set_border_style(FT_DOUBLE_STYLE);
+        eolTable.set_border_style(FT_SOLID_ROUND_STYLE);
 
         eolTable << "Detected EOL, stdin closed. " << endr;
         eolTable << "Database synced successfully. " << endr;
         eolTable << "Exit with code 255. " << endr;
 
-        cout << endl << eolTable.to_string() << endl;
+        cout << endl << endl << eolTable.to_string() << endl;
 
         exit(255);
     }
