@@ -10,4 +10,4 @@ add_executable(BookingTickets src/main.cpp
 
 # orm framework need sqlite3 library.
 find_package(libfort)
-target_link_libraries(BookingTickets sqlite3 fort jsoncpp cpr fmt)
+target_link_libraries(BookingTickets sqlite3 fort jsoncpp cpr fmt curl)
